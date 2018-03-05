@@ -1,0 +1,16 @@
+{
+  "name": "chat-app",
+  "version": "0.0.0",
+  "description": "a chat app in node",
+  "main": "index.js",
+  "author": "renato niola <niolarenato01@gmail.com>",
+  "license": "MIT",
+  "scripts" : {
+    "dev" : "nodemon ."
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "http": "^0.0.0",
+    "nodemon": "^1.17.1"
+  }
+}

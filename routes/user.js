@@ -13,7 +13,7 @@ router.post('/users', (req, res) => {
     }).then((token) => {
       res.header('x-auth', token).send(user);
     }).catch((e) => {
-      res.status(400).send(e);
+      res.status(400).send({'error : ': 'there was some kind of error with the signing in  process , your email might already be in use'});
     })
   });
   

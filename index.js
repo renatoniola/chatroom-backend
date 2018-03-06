@@ -1,15 +1,22 @@
 const express = require('express')
 const http = require('http')
+const dotenv = require('dotenv')
+const bodyParser = require('body-parser');
+dotenv.config();
 
 const port = process.env.PORT || 3030
-
+var {mongoose} = require('./db/mongoose');
 
 const app = express()
-const { common } = require('./routes')
+
+const { common , user } = require('./routes')
 
 app
-    .use(common)
-
+    .use(bodyParser.json())
+    .use(bodyParser.urlencoded({ extended: true }))
+    .use(common,user)
+    
+    
     .use((req, res, next) => {
         const err = new Error('Not Found')
         err.status = 404

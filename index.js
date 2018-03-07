@@ -1,3 +1,14 @@
+let env = process.env.NODE_ENV || 'development';
+
+if( env === 'development'){
+    console.log('sii')
+    process.env.PORT = 3030;
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/chatApp';
+} else if ( env === 'test'){
+    process.env.PORT = 3030;
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/chatAppTest';
+}
+
 const express = require('express')
 const http = require('http')
 const dotenv = require('dotenv')
@@ -5,7 +16,7 @@ const bodyParser = require('body-parser');
 dotenv.config();
 
 const port = process.env.PORT || 3030
-var {mongoose} = require('./db/mongoose');
+const {mongoose} = require('./db/mongoose');
 
 const app = express()
 
@@ -35,6 +46,8 @@ app
 
 const server = http.Server(app)
 
-server.listen(port, () => {
-  console.log(`Server running on port ${port}`)
+server.listen(process.env.PORT, () => {
+  console.log(`Server running on port ${process.env.PORT} in enviroment ${env} with mongodb : ${process.env.MONGODB_URI}`)
 })
+
+module.exports = {app};

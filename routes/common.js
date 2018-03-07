@@ -1,6 +1,7 @@
 const router = require('express').Router()
+const {authenticate} = require('../middleware/authenticate');
 
-router.get('/', (req, res, next) => {
+router.get('/', authenticate,(req, res, next) => {
     
     res.send('Ok!!')
   })

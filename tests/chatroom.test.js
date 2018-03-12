@@ -70,6 +70,24 @@ describe('Chatroom tests', () => {
   .end(done);
 }); 
 
+it('should return 2 chatrooms belonging to the first user', (done) => {
+    request(app)
+    .get('/chatrooms')
+    .set('x-auth', users[0].tokens[0].token)
+    .expect(200)
+    
+    .expect((res) => {
+      console.log(users[0]._id);
+      Chatroom.count( { users: { "$in" : [users[0]._id] } }, function( err, count){
+        console.log(res)
+        expect( count).toBe(2);
+      })
+      
+      
+    })
+  .end(done);
+  }); 
+
   
   
 });

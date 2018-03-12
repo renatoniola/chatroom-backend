@@ -56,4 +56,10 @@ router.post('/chatroom',authenticate, (req, res) => {
     
   });
 
+  router.get('/chatrooms',authenticate, (req, res) => {
+    Chatroom.find( { users: { "$in" : [req.user._id] } }, function( err, chatroom){
+        res.send(chatroom);
+      })
+  });
+
 module.exports = router

@@ -1,7 +1,7 @@
 let env = process.env.NODE_ENV || 'development';
 
 if( env === 'development'){
-    console.log('sii')
+    
     process.env.PORT = 3030;
     process.env.MONGODB_URI = 'mongodb://localhost:27017/chatApp';
 } else if ( env === 'test'){
@@ -20,12 +20,12 @@ const {mongoose} = require('./db/mongoose');
 
 const app = express()
 
-const { common , user } = require('./routes')
+const { common , user ,chatroom } = require('./routes')
 
 app
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }))
-    .use(common,user)
+    .use(common,user,chatroom)
     
     
     .use((req, res, next) => {

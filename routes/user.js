@@ -40,6 +40,6 @@ router.delete('/users/me/token', authenticate, (req, res) => {
 
 router.get('/users/me', authenticate, (req, res) => {
     res.send(req.user);
-  });
+});
   
   module.exports = router

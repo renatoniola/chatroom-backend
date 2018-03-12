@@ -4,13 +4,72 @@ const {ObjectID} = require('mongodb');
 
 const {app} = require('./../index');
 const {User} = require('./../models/user');
-const { users, populateUsers} = require('./seed/seed');
+const { users, populateUsers} = require('./seed/seedMultiUser');
+const {Chatroom} = require('./../models/chatroom');
 
-//beforeEach(populateUsers);
+
+
+
+
+console.log('chatroom.js');
 
 describe('Chatroom tests', () => {
-  it('should do something', () => {
-    expect(0).toBeTruthy();
+
+  beforeEach(populateUsers);
+  console.log(users)
+
+  it('should create a chatroom with two users', (done) => {
+    
+    Chatroom.remove({},function(){});
+
+    request(app)
+      .post('/chatroom')
+      .set('x-auth', users[0].tokens[0].token)
+      .send({"targetuser" : users[1]._id ,"message" : "test message" })
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.messages[0].text).toBe( "test message" );
+        expect(res.body.messages[0]._creator).toBe( users[0]._id.toString() );
+      })
+    .end(done);
   })
+
+  it('should not create another chatroom', (done) => {
+      request(app)
+      .post('/chatroom')
+      .set('x-auth', users[0].tokens[0].token)
+      .send({"targetuser" : users[1]._id ,"message" : "new test message" })
+      .expect(200)
+      
+      .expect((res) => {
+
+        Chatroom.count({}, function( err, count){
+          expect( count).toBe( 1 );
+        })
+        
+        
+      })
+    .end(done);
+  });
+
+   it('should  create another chatroom with the third user', (done) => {
+    request(app)
+    .post('/chatroom')
+    .set('x-auth', users[2].tokens[0].token)
+    .send({"targetuser" : users[0]._id ,"message" : "test message for new chatroom" })
+    .expect(200)
+    
+    .expect((res) => {
+
+      Chatroom.count({}, function( err, count){
+        expect( count).toBe( 2 );
+      })
+      
+      
+    })
+  .end(done);
+}); 
+
+  
   
 });

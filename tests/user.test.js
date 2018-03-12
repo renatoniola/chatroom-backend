@@ -6,10 +6,11 @@ const {app} = require('./../index');
 const {User} = require('./../models/user');
 const { users, populateUsers} = require('./seed/seed');
 
-beforeEach(populateUsers);
+
+console.log('user.test.js');
 
 describe('User tests', () => {
-
+  beforeEach(populateUsers);
   describe('GET /users/me', () => {
       it('should return user if authenticated', (done) => {
         request(app)
@@ -86,6 +87,8 @@ describe('User tests', () => {
 });
 
 describe('DELETE /users/me/token', () => {
+
+  beforeEach(populateUsers);
   it('should remove auth token on logout', (done) => {
     request(app)
       .delete('/users/me/token')

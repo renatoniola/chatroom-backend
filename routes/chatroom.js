@@ -6,7 +6,7 @@ const {authenticate} = require('../middleware/authenticate');
 
 router.post('/chatroom',authenticate, (req, res) => {
     
-    Chatroom.find({ users: { "$in" : [req.body.targetuser,req.user._id]} }, (err, chatroom) => {
+    Chatroom.find({ users: { "$in" : [req.body.targetuser] } , users: { "$in" : [req.user._id] } }, (err, chatroom) => {
        if(err){ res.send(err); }
        
 

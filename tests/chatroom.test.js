@@ -77,17 +77,8 @@ it('should return 2 chatrooms belonging to the first user', (done) => {
     .expect(200)
     
     .expect((res) => {
-      console.log(users[0]._id);
-      Chatroom.count( { users: { "$in" : [users[0]._id] } }, function( err, count){
-        console.log(res)
-        expect( count).toBe(2);
-      })
-      
-      
+      expect(res.body.chatrooms.length).toBe(2)
     })
   .end(done);
   }); 
-
-  
-  
 });

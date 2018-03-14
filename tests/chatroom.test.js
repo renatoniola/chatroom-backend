@@ -70,6 +70,15 @@ describe('Chatroom tests', () => {
   .end(done);
 }); 
 
-  
-  
+it('should return 2 chatrooms belonging to the first user', (done) => {
+    request(app)
+    .get('/chatrooms')
+    .set('x-auth', users[0].tokens[0].token)
+    .expect(200)
+    
+    .expect((res) => {
+      expect(res.body.chatrooms.length).toBe(2)
+    })
+  .end(done);
+  }); 
 });

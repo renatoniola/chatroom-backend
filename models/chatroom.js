@@ -13,6 +13,11 @@ var MessageSchema = new mongoose.Schema({
     _creator: {
         type : mongoose.Schema.Types.ObjectId,
         required : true
+    },
+    _created_at : { 
+       type: Date, 
+       default: Date.now 
+
     }
 })
 

@@ -9,8 +9,7 @@ if( env === 'development'){
     process.env.MONGODB_URI = 'mongodb://localhost:27017/chatAppTest';
 }
 
-const express = require('express')
-const http = require('http')
+
 const dotenv = require('dotenv')
 const cors = require('cors')
 const bodyParser = require('body-parser');
@@ -19,7 +18,20 @@ dotenv.config();
 const port = process.env.PORT || 3030
 const {mongoose} = require('./db/mongoose');
 
+
+const express = require('express')
+const http = require('http')
 const app = express()
+const server = http.Server(app)
+const io  = require('socket.io')(server)
+
+io.on('connect', function (socket) {
+
+  console.log('client connected in server');
+
+  
+
+});
 
 const { common , user ,chatroom ,sessions} = require('./routes')
 
@@ -44,7 +56,13 @@ app
      })
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }))
+    .use(function(req,res,next){
+        req.io = io;
+        next();
+    })
     .use(common,user,chatroom,sessions)
+
+
 
 
     .use((req, res, next) => {
@@ -63,7 +81,7 @@ app
     })
 
 
-const server = http.Server(app)
+
 
 server.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT} in enviroment ${env} with mongodb : ${process.env.MONGODB_URI}`)
